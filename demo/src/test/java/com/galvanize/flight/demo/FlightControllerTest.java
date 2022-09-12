@@ -16,8 +16,8 @@ import static org.hamcrest.Matchers.is;
 
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @WebMvcTest(FlightController.class)
 
@@ -52,10 +52,28 @@ public class FlightControllerTest {
                 .andExpect(jsonPath("$[0].tickets[0].passenger.lastName", is("Johnson")))
                 .andExpect(jsonPath("$[0].tickets[0].price", is(200)))
 
-        //second flight
+                //second flight
                 .andExpect(jsonPath("$[1].departsOn", is("2017-04-21 14:34")))
                 .andExpect(jsonPath("$[1].tickets[1].passenger.firstName", is("Cher")))
                 .andExpect(jsonPath("$[1].tickets[1].passenger.lastName", is("")))
                 .andExpect(jsonPath("$[1].tickets[1].price", is(400)));
+
+    }
+
+    @Test
+    public void setTicketSumWorks() throws Exception {
+        MockHttpServletRequestBuilder request = post("/flights/tickets/total")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content("""
+                        {
+                            "q":"other",
+                            "from": 2010
+                        }
+                        """);
+
+        this.mvc.perform(request)
+                .andExpect(status().isOk())
+                .andExpect(content().string("Search: q=something from=2008"));
     }
 }
+

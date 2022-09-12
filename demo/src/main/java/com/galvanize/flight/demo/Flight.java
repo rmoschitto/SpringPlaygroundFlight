@@ -26,6 +26,14 @@ public class Flight {
     public void setTickets(List<Tickets> tickets) {
         this.tickets = tickets;
     }
+
+    public int totalTicketSum(){
+       int ticketSum = 0;
+        for (int i = 0; i < tickets.size(); i++) {
+           ticketSum += tickets.get(i).price;
+        }
+        return ticketSum;
+    }
 }
 
 
