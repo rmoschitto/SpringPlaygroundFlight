@@ -3,6 +3,7 @@ package com.galvanize.flight.demo;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -17,9 +18,9 @@ public class FlightController {
     public Flight getFlight() {
         Flight flight1 = new Flight();
         flight1.setDepartsOn(LocalDateTime.of(2017, 4, 21, 14, 34));
-        Passenger passenger1 = new Passenger("Some name", "Some other name");
+        Passenger passenger1 = new Passenger("Dwayne", "Johnson");
         Tickets tickets1 = new Tickets(200, passenger1);
-        List<Tickets> tickets = new ArrayList<>();  //created new List of ticket objects called tickets
+        ArrayList<Tickets> tickets = new ArrayList<>();  //created new List of ticket objects called tickets
         tickets.add(tickets1);  //added tickets1 to list
         flight1.setTickets(tickets);
 
@@ -32,7 +33,7 @@ public class FlightController {
         flight1.setDepartsOn(LocalDateTime.of(2017, 4, 21, 14, 34));
         Passenger passenger1 = new Passenger("Dwayne", "Johnson");
         Tickets tickets1 = new Tickets(200, passenger1);
-        List<Tickets> tickets = new ArrayList<>();  //created new List of ticket objects called tickets
+        ArrayList<Tickets> tickets = new ArrayList<>();  //created new List of ticket objects called tickets
         tickets.add(tickets1);  //added tickets1 to list
         flight1.setTickets(tickets);
 
@@ -47,7 +48,9 @@ public class FlightController {
     }
 
     @PostMapping("/flights/tickets/total")
-    public List<Flight> getFlightsSum() {
+    public CalculateTickets totalTicketsSum(@RequestBody Flight tickets) {
+        CalculateTickets calculateTickets = new CalculateTickets();
+        calculateTickets.setResult(tickets.totalTicketsSum());
+        return calculateTickets;
     }
-
-    }
+}
